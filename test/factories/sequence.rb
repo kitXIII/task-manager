@@ -1,11 +1,11 @@
-TYPES = %w[Developer Manager Admmin]
-STATES = %w[new_task in_development in_qa in_code_review ready_for_release released archived]
+TYPES = ['Developer', 'Manager', 'Admmin'].freeze
+STATES = ['new_task', 'in_development', 'in_qa', 'in_code_review', 'ready_for_release', 'released', 'archived'].freeze
 
 FactoryBot.define do
   sequence :string, aliases: [:first_name, :last_name, :password, :name] do |n|
     "string#{n}"
   end
-  
+
   sequence :text, aliases: [:description] do |n|
     "text#{n}"
   end
