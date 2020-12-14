@@ -1,3 +1,5 @@
+TYPES = %w[Developer Manager Admmin]
+
 FactoryBot.define do
   sequence :string, aliases: [:first_name, :last_name, :password] do |n|
     "string#{n}"
@@ -9,5 +11,9 @@ FactoryBot.define do
 
   sequence :avatar do |n|
     "path/to/avatar/#{n}.jpg"
+  end
+
+  sequence :type do
+    TYPES.sample
   end
 end
