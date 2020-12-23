@@ -7,7 +7,7 @@ class Web::SessionsController < Web::ApplicationController
     @session = SessionForm.new(session_params)
 
     if @session.valid?
-      # sign_in(@session.user) # it hasn't been defined yet
+      sign_in(@session.user)
       redirect_to(:board)
     else
       render(:new)
@@ -15,7 +15,7 @@ class Web::SessionsController < Web::ApplicationController
   end
 
   def destroy
-    # sign_out # it hasn't been defined yet
+    sign_out
     redirect_to(:new_session)
   end
 
