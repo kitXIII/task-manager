@@ -3,3 +3,8 @@
 ## Requirements
 
 * Docker
+
+## Credentials
+
+* login: admin@test.io
+* password: admin
