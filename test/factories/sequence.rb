@@ -16,6 +16,6 @@ FactoryBot.define do
   end
 
   sequence :expired_at do |n|
-    n.days.after
+    n.days.after.to_date
   end
 end
