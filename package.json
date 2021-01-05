@@ -2,8 +2,7 @@
   "name": "app",
   "private": true,
   "scripts": {
-    "lint": "node_modules/.bin/eslint app/javascript",
-    "start": "webpack-dev-server"
+    "lint": "node_modules/.bin/eslint app/javascript"
   },
   "dependencies": {
     "@lourenci/react-kanban": "^2.1.0",
