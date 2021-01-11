@@ -12,6 +12,7 @@ services:
       - 3000:3000
       - 3001:3001
       - 3002:3002
+      - 3035:3035
     depends_on:
       - db
     environment: &web-environment
@@ -23,7 +24,7 @@ services:
       GEM_PATH: /bundle_cache
       RAILS_PORT: 3000
       RUBYOPT: -W:no-deprecated -W:no-experimental
-    command: bundle exec rails s -b '0.0.0.0' -p 3000
+    command: bundle exec foreman start -f Procfile.dev
 
   db:
     image: postgres:11.4
