@@ -12,6 +12,7 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "filenames",
     "prettier"
   ],
@@ -27,16 +28,7 @@
     ]
   },
   "rules": {
-    "prettier/prettier": [
-      2,
-      {
-        "printWidth": 120,
-        "tabWidth": 2,
-        "semi": true,
-        "singleQuote": true,
-        "trailingComma": "all"
-      }
-    ],
+    "prettier/prettier": 2,
     "no-param-reassign": [
       "error",
       {
@@ -105,6 +97,8 @@
     ],
     "no-debugger": 1,
     "react/destructuring-assignment": 0,
-    "react/static-property-placement": 0
+    "react/static-property-placement": 0,
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 1
   }
 }
