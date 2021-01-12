@@ -3,6 +3,7 @@ import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
 
 import Task from 'components/Task';
+import ColumnHeader from 'components/ColumnHeader';
 import TasksRepository from 'repositories/TasksRepository';
 
 const STATES = [
@@ -30,8 +31,6 @@ const loadColumn = (state, page, perPage) =>
     page,
     perPage
   });
-
-const renderCard = (card) => <Task task={card} />;
 
 const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
@@ -64,8 +63,27 @@ const TaskBoard = () => {
   useEffect(() => loadBoard(), [loadBoard]);
   useEffect(() => generateBoard(), [generateBoard]);
 
+  const loadColumnMore = useCallback(
+    (state, page = 1, perPage = 10) => {
+      loadColumn(state, page, perPage).then(({ data }) => {
+        const cards = boardCards[state]?.cards;
+
+        setBoardCards((prevState) => ({
+          ...prevState,
+          [state]: { cards: [...cards, ...data.items], meta: data.meta }
+        }));
+      });
+    },
+    [boardCards]
+  );
+
+  const renderCard = useCallback((card) => <Task task={card} />, []);
+  const renderColumnHeader = useCallback((column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />, [
+    loadColumnMore
+  ]);
+
   return (
-    <KanbanBoard renderCard={renderCard} disableColumnDrag>
+    <KanbanBoard renderCard={renderCard} renderColumnHeader={renderColumnHeader} disableColumnDrag>
       {board}
     </KanbanBoard>
   );
