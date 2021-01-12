@@ -10,10 +10,10 @@ function authenticityToken() {
 
 function headers() {
   return {
-    Accept: '*/*',
+    'Accept': '*/*',
     'Content-Type': 'application/json',
     'X-CSRF-Token': authenticityToken(),
-    'X-Requested-With': 'XMLHttpRequest',
+    'X-Requested-With': 'XMLHttpRequest'
   };
 }
 
@@ -23,7 +23,7 @@ axios.defaults.headers.delete = headers();
 axios.interceptors.response.use(null, (error) => {
   if (error.response.status === 422) {
     const {
-      response: { data: errors },
+      response: { data: errors }
     } = error;
     return Promise.reject(camelize(errors.errors));
   }
@@ -40,7 +40,7 @@ export default {
     return axios
       .get(url, {
         params: decamelize(params),
-        paramsSerializer: (parameters) => qs.stringify(parameters, { encode: false }),
+        paramsSerializer: (parameters) => qs.stringify(parameters, { encode: false })
       })
       .then(camelize);
   },
@@ -59,5 +59,5 @@ export default {
 
   delete(url) {
     return axios.delete(url).then(camelize);
-  },
+  }
 };
