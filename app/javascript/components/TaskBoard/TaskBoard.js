@@ -2,16 +2,17 @@ import React, { useEffect, useState, useCallback } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
 
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 
 import TasksRepository from 'repositories/TasksRepository';
 
 import TaskForm from 'forms/TaskForm';
 
-import Task from 'components/Task';
-import ColumnHeader from 'components/ColumnHeader';
 import AddPopup from 'components/AddPopup';
+import ColumnHeader from 'components/ColumnHeader';
+import EditPopup from 'components/EditPopup';
+import Task from 'components/Task';
 
 import useStyles from './useStyles';
 
@@ -27,6 +28,7 @@ const STATES = [
 
 const MODES = {
   ADD: 'add',
+  EDIT: 'edit',
   NONE: 'none'
 };
 
@@ -93,11 +95,6 @@ const TaskBoard = () => {
     [boardCards]
   );
 
-  const renderCard = useCallback((card) => <Task task={card} />, []);
-  const renderColumnHeader = useCallback((column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />, [
-    loadColumnMore
-  ]);
-
   const handleCardDragEnd = useCallback(
     (task, source, destination) => {
       const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -119,9 +116,15 @@ const TaskBoard = () => {
   );
 
   const [mode, setMode] = useState(MODES.NONE);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const handleOpenAddPopup = () => {
     setMode(MODES.ADD);
+  };
+
+  const handleOpenEditPopup = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODES.EDIT);
   };
 
   const handleClose = () => {
@@ -135,6 +138,28 @@ const TaskBoard = () => {
       setMode(MODES.NONE);
     });
   };
+
+  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+  };
+
+  const handleTaskDestroy = (task) =>
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+
+  const renderCard = useCallback((card) => <Task onClick={handleOpenEditPopup} task={card} />, []);
+  const renderColumnHeader = useCallback((column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />, [
+    loadColumnMore
+  ]);
 
   return (
     <>
@@ -150,6 +175,15 @@ const TaskBoard = () => {
         <AddIcon onClick={handleOpenAddPopup} />
       </Fab>
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
+      {mode === MODES.EDIT && (
+        <EditPopup
+          onLoadCard={loadTask}
+          onCardDestroy={handleTaskDestroy}
+          onCardUpdate={handleTaskUpdate}
+          onClose={handleClose}
+          cardId={openedTaskId}
+        />
+      )}
     </>
   );
 };
