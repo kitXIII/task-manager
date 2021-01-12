@@ -2,14 +2,14 @@ import React, { useEffect, useState, useCallback } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
 
-// import Task from 'components/Task';
+import Task from 'components/Task';
 import TasksRepository from 'repositories/TasksRepository';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
   { key: 'in_development', value: 'In Dev' },
   { key: 'in_qa', value: 'In QA' },
-  { key: 'in_code_review', value: 'in CR' },
+  { key: 'in_code_review', value: 'In CR' },
   { key: 'ready_for_release', value: 'Ready for release' },
   { key: 'released', value: 'Released' },
   { key: 'archived', value: 'Archived' }
@@ -30,6 +30,8 @@ const loadColumn = (state, page, perPage) =>
     page,
     perPage
   });
+
+const renderCard = (card) => <Task task={card} />;
 
 const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
@@ -62,7 +64,11 @@ const TaskBoard = () => {
   useEffect(() => loadBoard(), [loadBoard]);
   useEffect(() => generateBoard(), [generateBoard]);
 
-  return <KanbanBoard disableColumnDrag>{board}</KanbanBoard>;
+  return (
+    <KanbanBoard renderCard={renderCard} disableColumnDrag>
+      {board}
+    </KanbanBoard>
+  );
 };
 
 export default TaskBoard;
