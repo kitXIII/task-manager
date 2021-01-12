@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 
 const Task = ({ task }) => {
-  const styles = useStyles;
+  const styles = useStyles();
 
   return (
     <Card className={styles.root}>
