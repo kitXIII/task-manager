@@ -2,6 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
 
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
+import useStyles from './useStyles';
 import Task from 'components/Task';
 import ColumnHeader from 'components/ColumnHeader';
 import TasksRepository from 'repositories/TasksRepository';
@@ -33,6 +37,8 @@ const loadColumn = (state, page, perPage) =>
   });
 
 const TaskBoard = () => {
+  const styles = useStyles();
+
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
 
@@ -103,14 +109,19 @@ const TaskBoard = () => {
   );
 
   return (
-    <KanbanBoard
-      renderCard={renderCard}
-      renderColumnHeader={renderColumnHeader}
-      onCardDragEnd={handleCardDragEnd}
-      disableColumnDrag
-    >
-      {board}
-    </KanbanBoard>
+    <>
+      <Fab className={styles.addButton} color='primary' aria-label='add'>
+        <AddIcon />
+      </Fab>
+      <KanbanBoard
+        renderCard={renderCard}
+        renderColumnHeader={renderColumnHeader}
+        onCardDragEnd={handleCardDragEnd}
+        disableColumnDrag
+      >
+        {board}
+      </KanbanBoard>
+    </>
   );
 };
 
