@@ -3,6 +3,12 @@ import qs from 'qs';
 
 import { camelize, decamelize } from './keysConverter';
 
+const defaultHeaders = {
+  'Accept': '*/*',
+  'Content-Type': 'application/json',
+  'X-Requested-With': 'XMLHttpRequest'
+};
+
 function authenticityToken() {
   const token = document.querySelector('meta[name="csrf-token"]');
   return token ? token.content : null;
@@ -10,10 +16,8 @@ function authenticityToken() {
 
 function headers() {
   return {
-    'Accept': '*/*',
-    'Content-Type': 'application/json',
-    'X-CSRF-Token': authenticityToken(),
-    'X-Requested-With': 'XMLHttpRequest'
+    ...defaultHeaders,
+    'X-CSRF-Token': authenticityToken()
   };
 }
 
@@ -40,7 +44,8 @@ export default {
     return axios
       .get(url, {
         params: decamelize(params),
-        paramsSerializer: (parameters) => qs.stringify(parameters, { encode: false })
+        paramsSerializer: (parameters) => qs.stringify(parameters, { encode: false }),
+        headers: defaultHeaders
       })
       .then(camelize);
   },
