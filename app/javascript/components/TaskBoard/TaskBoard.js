@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
 
@@ -54,20 +54,20 @@ const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
 
-  const loadColumnInitial = useCallback((state, page = 1, perPage = 10) => {
+  const loadColumnInitial = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data }) => {
-      setBoardCards((prevState) => ({
-        ...prevState,
+      setBoardCards((currentBoardCards) => ({
+        ...currentBoardCards,
         [state]: { cards: data.items, meta: data.meta }
       }));
     });
-  }, []);
+  };
 
-  const loadBoard = useCallback(() => {
+  const loadBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
-  }, [loadColumnInitial]);
+  };
 
-  const generateBoard = useCallback(() => {
+  const generateBoard = () => {
     setBoard({
       columns: STATES.map(({ key, value }) => ({
         id: key,
@@ -76,44 +76,41 @@ const TaskBoard = () => {
         meta: propOr({}, 'meta', boardCards[key])
       }))
     });
-  }, [boardCards]);
+  };
 
-  useEffect(() => loadBoard(), [loadBoard]);
-  useEffect(() => generateBoard(), [generateBoard]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => loadBoard(), []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => generateBoard(), [boardCards]);
 
-  const loadColumnMore = useCallback(
-    (state, page = 1, perPage = 10) => {
-      loadColumn(state, page, perPage).then(({ data }) => {
-        const cards = boardCards[state]?.cards;
+  const loadColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumn(state, page, perPage).then(({ data }) => {
+      setBoardCards((currentBoardCards) => {
+        const cards = currentBoardCards[state]?.cards;
 
-        setBoardCards((prevState) => ({
-          ...prevState,
+        return {
+          ...currentBoardCards,
           [state]: { cards: [...cards, ...data.items], meta: data.meta }
-        }));
+        };
       });
-    },
-    [boardCards]
-  );
+    });
+  };
 
-  const handleCardDragEnd = useCallback(
-    (task, source, destination) => {
-      const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
-      if (!transition) {
-        return null;
-      }
+  const handleCardDragEnd = (task, source, destination) => {
+    const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
+    if (!transition) {
+      return null;
+    }
 
-      return TasksRepository.update(task.id, { stateEvent: transition.event })
-        .then(() => {
-          loadColumnInitial(destination.toColumnId);
-          loadColumnInitial(source.fromColumnId);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-alert
-          alert(`Move failed! ${error.message}`);
-        });
-    },
-    [loadColumnInitial]
-  );
+    return TasksRepository.update(task.id, { stateEvent: transition.event })
+      .then(() => {
+        loadColumnInitial(destination.toColumnId);
+        loadColumnInitial(source.fromColumnId);
+      })
+      .catch((error) => {
+        alert(`Move failed! ${error.message}`);
+      });
+  };
 
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
@@ -156,16 +153,11 @@ const TaskBoard = () => {
       handleClose();
     });
 
-  const renderCard = useCallback((card) => <Task onClick={handleOpenEditPopup} task={card} />, []);
-  const renderColumnHeader = useCallback((column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />, [
-    loadColumnMore
-  ]);
-
   return (
     <>
       <KanbanBoard
-        renderCard={renderCard}
-        renderColumnHeader={renderColumnHeader}
+        renderCard={(card) => <Task onClick={handleOpenEditPopup} task={card} />}
+        renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
         onCardDragEnd={handleCardDragEnd}
         disableColumnDrag
       >
