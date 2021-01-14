@@ -16,7 +16,7 @@ import Task from 'components/Task';
 
 import useStyles from './useStyles';
 
-const STATES = [
+const TASK_STATES = [
   { key: 'new_task', value: 'New' },
   { key: 'in_development', value: 'In Dev' },
   { key: 'in_qa', value: 'In QA' },
@@ -33,7 +33,7 @@ const MODES = {
 };
 
 const initialBoard = {
-  columns: STATES.map((column) => ({
+  columns: TASK_STATES.map((column) => ({
     id: column.key,
     title: column.value,
     cards: [],
@@ -41,9 +41,9 @@ const initialBoard = {
   }))
 };
 
-const loadColumn = (state, page, perPage) =>
+const loadColumn = (taskState, page, perPage) =>
   TasksRepository.index({
-    q: { stateEq: state },
+    q: { stateEq: taskState },
     page,
     perPage
   });
@@ -54,22 +54,22 @@ const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
 
-  const loadColumnInitial = (state, page = 1, perPage = 10) => {
-    loadColumn(state, page, perPage).then(({ data }) => {
+  const loadColumnInitial = (taskState, page = 1, perPage = 10) => {
+    loadColumn(taskState, page, perPage).then(({ data }) => {
       setBoardCards((currentBoardCards) => ({
         ...currentBoardCards,
-        [state]: { cards: data.items, meta: data.meta }
+        [taskState]: { cards: data.items, meta: data.meta }
       }));
     });
   };
 
   const loadBoard = () => {
-    STATES.map(({ key }) => loadColumnInitial(key));
+    TASK_STATES.map(({ key }) => loadColumnInitial(key));
   };
 
   const generateBoard = () => {
     setBoard({
-      columns: STATES.map(({ key, value }) => ({
+      columns: TASK_STATES.map(({ key, value }) => ({
         id: key,
         title: value,
         cards: propOr({}, 'cards', boardCards[key]),
@@ -83,14 +83,14 @@ const TaskBoard = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => generateBoard(), [boardCards]);
 
-  const loadColumnMore = (state, page = 1, perPage = 10) => {
-    loadColumn(state, page, perPage).then(({ data }) => {
+  const loadColumnMore = (taskState, page = 1, perPage = 10) => {
+    loadColumn(taskState, page, perPage).then(({ data }) => {
       setBoardCards((currentBoardCards) => {
-        const cards = currentBoardCards[state]?.cards;
+        const cards = currentBoardCards[taskState]?.cards;
 
         return {
           ...currentBoardCards,
-          [state]: { cards: [...cards, ...data.items], meta: data.meta }
+          [taskState]: { cards: [...cards, ...data.items], meta: data.meta }
         };
       });
     });
