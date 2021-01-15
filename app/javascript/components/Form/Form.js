@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 
 import UserSelect from 'components/UserSelect';
 
+import TaskPresenter from 'presenters/TaskPresenter';
+
 import useStyles from './useStyles';
 
 export const FORM_TYPES = {
@@ -27,7 +29,7 @@ const Form = ({ errors, onChange, task, type }) => {
         error={has('name', errors)}
         helperText={errors.name}
         onChange={handleChangeField}
-        value={task.name}
+        value={TaskPresenter.name(task)}
         name='name'
         label='Name'
         required
@@ -37,7 +39,7 @@ const Form = ({ errors, onChange, task, type }) => {
         error={has('description', errors)}
         helperText={errors.description}
         onChange={handleChangeField}
-        value={task.description}
+        value={TaskPresenter.description(task)}
         name='description'
         label='Description'
         required
@@ -47,7 +49,7 @@ const Form = ({ errors, onChange, task, type }) => {
       {isEditFormType && (
         <UserSelect
           label='Author'
-          value={task.author}
+          value={TaskPresenter.author(task)}
           name='author'
           onChange={handleChangeSelect('author')}
           isRequired
@@ -57,7 +59,7 @@ const Form = ({ errors, onChange, task, type }) => {
       )}
       <UserSelect
         label='Assigned to'
-        value={task.assignee}
+        value={TaskPresenter.assignee(task)}
         name='assignee'
         onChange={handleChangeSelect('assignee')}
         isRequired
