@@ -37,7 +37,12 @@ const ColumnHeader = ({ column, onLoadMore }) => {
 };
 
 ColumnHeader.propTypes = {
-  column: PropTypes.shape().isRequired,
+  column: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    meta: PropTypes.shape().isRequired
+  }).isRequired,
   onLoadMore: PropTypes.func.isRequired
 };
 

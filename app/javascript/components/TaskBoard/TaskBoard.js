@@ -74,7 +74,7 @@ const TaskBoard = () => {
       columns: TASK_STATES.map(({ key, value }) => ({
         id: key,
         title: value,
-        cards: propOr({}, 'cards', boardCards[key]),
+        cards: propOr([], 'cards', boardCards[key]),
         meta: propOr({}, 'meta', boardCards[key])
       }))
     });
