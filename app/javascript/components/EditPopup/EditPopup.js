@@ -12,7 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '@material-ui/core/Modal';
 
-import Form from 'components/Form';
+import Form, { FORM_TYPES } from 'components/Form';
 
 import useStyles from './useStyles';
 
@@ -68,7 +68,7 @@ const EditPopup = ({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
               <CircularProgress />
             </div>
           ) : (
-            <Form errors={errors} onChange={setTask} task={task} />
+            <Form errors={errors} onChange={setTask} task={task} type={FORM_TYPES.EDIT} />
           )}
         </CardContent>
         <CardActions className={styles.actions}>

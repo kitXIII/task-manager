@@ -12,7 +12,7 @@ import Modal from '@material-ui/core/Modal';
 
 import TaskForm from 'forms/TaskForm';
 
-import Form from 'components/Form';
+import Form, { FORM_TYPES } from 'components/Form';
 
 import useStyles from './useStyles';
 
@@ -48,7 +48,7 @@ const AddPopup = ({ onClose, onCreateCard }) => {
           title='Add New Task'
         />
         <CardContent>
-          <Form task={task} onChange={changeTask} error={errors} />
+          <Form task={task} onChange={changeTask} error={errors} type={FORM_TYPES.NEW} />
         </CardContent>
         <CardActions className={styles.actions}>
           <Button disabled={isSaving} onClick={handleCreate} variant='contained' size='small' color='primary'>
