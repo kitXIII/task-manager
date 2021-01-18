@@ -1,18 +1,27 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { has } from 'ramda';
 
 import TextField from '@material-ui/core/TextField';
 
+import UserSelect from 'components/UserSelect';
+
+import TaskPresenter from 'presenters/TaskPresenter';
+
 import useStyles from './useStyles';
 
-const Form = ({ errors, onChange, task }) => {
-  const handleChangeField = useCallback((e) => onChange({ ...task, [e.target.name]: e.target.value }), [
-    onChange,
-    task
-  ]);
+export const FORM_TYPES = {
+  NEW: 'new',
+  EDIT: 'edit'
+};
+
+const Form = ({ errors, onChange, task, type }) => {
+  const handleChangeField = (e) => onChange({ ...task, [e.target.name]: e.target.value });
+  const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
 
   const styles = useStyles();
+
+  const isEditFormType = type === FORM_TYPES.EDIT;
 
   return (
     <form className={styles.root}>
@@ -20,7 +29,7 @@ const Form = ({ errors, onChange, task }) => {
         error={has('name', errors)}
         helperText={errors.name}
         onChange={handleChangeField}
-        value={task.name}
+        value={TaskPresenter.name(task)}
         name='name'
         label='Name'
         required
@@ -30,12 +39,32 @@ const Form = ({ errors, onChange, task }) => {
         error={has('description', errors)}
         helperText={errors.description}
         onChange={handleChangeField}
-        value={task.description}
+        value={TaskPresenter.description(task)}
         name='description'
         label='Description'
         required
         multiline
         margin='dense'
+      />
+      {isEditFormType && (
+        <UserSelect
+          label='Author'
+          value={TaskPresenter.author(task)}
+          name='author'
+          onChange={handleChangeSelect('author')}
+          isRequired
+          error={has('author', errors)}
+          helperText={errors.author}
+        />
+      )}
+      <UserSelect
+        label='Assigned to'
+        value={TaskPresenter.assignee(task)}
+        name='assignee'
+        onChange={handleChangeSelect('assignee')}
+        isRequired
+        error={has('assignee', errors)}
+        helperText={errors.author}
       />
     </form>
   );
@@ -43,7 +72,8 @@ const Form = ({ errors, onChange, task }) => {
 
 Form.propTypes = {
   onChange: PropTypes.func.isRequired,
-  task: PropTypes.shape().isRequired,
+  task: TaskPresenter.shape().isRequired,
+  type: PropTypes.string,
   errors: PropTypes.shape({
     name: PropTypes.arrayOf(PropTypes.string),
     description: PropTypes.arrayOf(PropTypes.string),
@@ -53,7 +83,8 @@ Form.propTypes = {
 };
 
 Form.defaultProps = {
-  errors: {}
+  errors: {},
+  type: FORM_TYPES.NEW
 };
 
 export default Form;
