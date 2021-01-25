@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { always } from 'ramda';
 
 import AsyncSelect from 'react-select/async';
 import FormControl from '@material-ui/core/FormControl';
@@ -13,7 +14,7 @@ import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
-const noop = () => {};
+const noop = always();
 
 const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) => {
   const [isFocused, setFocus] = useState(false);
