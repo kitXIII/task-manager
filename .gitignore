@@ -37,3 +37,4 @@ yarn-debug.log*
 
 .vscode
 /app/javascript/routes/ApiRoutes.js
+/coverage
