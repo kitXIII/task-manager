@@ -25,6 +25,7 @@ services:
       RAILS_PORT: 3000
       RUBYOPT: -W:no-deprecated -W:no-experimental
       ROLLBAR_ACCESS_TOKEN: ${ROLLBAR_ACCESS_TOKEN}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
     command: bundle exec foreman start -f Procfile.dev
 
   db:
