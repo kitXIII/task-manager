@@ -41,6 +41,8 @@ class Api::V1::TasksController < Api::V1::ApplicationController
     task = Task.find(params[:id])
     task.destroy
 
+    UserMailer.with({ task: task }).task_destroyed.deliver_now
+
     respond_with(task)
   end
 

@@ -13,4 +13,10 @@ class UserMailer < ApplicationMailer
 
     mail(to: @task.author.email, subject: 'Task was changed')
   end
+
+  def task_destroyed
+    @task = params[:task]
+
+    mail(to: @task.author.email, subject: 'Task was deleted')
+  end
 end
