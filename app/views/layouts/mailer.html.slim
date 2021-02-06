@@ -1,3 +1,25 @@
+| <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 html
-  body
-    = yield
+  head
+    title Task Board Project
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+  
+  body bgcolor="#efefef" style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif;"
+    table border="0" cellpadding="0" cellspacing="0" width="100%"
+      tr
+        td align="center"
+          table width="600" border="0" cellpadding="0" cellspacing="0"
+            tr
+              td bgcolor="#3F52B5" align="center" style="padding: 30px 0;"
+                span style="color: #ffffff; font-size: 20px;"
+                  b
+                    | Task Board Project
+            tr
+              td bgcolor="#FFFFFF" style="padding: 40px 50px; line-height: 20px; font-size: 14px;"
+                p style="padding: 0 0 30px; margin: 0"
+                  | Dear user!
+                p style="padding: 0; margin: 0"
+                  = yield
+            tr
+              td align="center" style="color: #9d9d9d; font-size: 12px; padding: 40px 0;"
+                | &copy; Task Board Project
