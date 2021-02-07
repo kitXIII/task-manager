@@ -19,4 +19,15 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal User.find_by(reset_password_token: user.reset_password_token), user
   end
+
+  test 'is actual reset password token' do
+    user = create(:user)
+    user.generate_reset_password_token!
+
+    assert(user.reset_password_token_actual?)
+
+    user.reset_password_token_sent_at = Time.zone.now - 24.hours
+
+    assert(!user.reset_password_token_actual?)
+  end
 end
