@@ -1,9 +1,20 @@
 class Web::PasswordResetsController < Web::ApplicationController
-  def new; end
+  def new
+    @password_reset = PasswordResetForm.new
+  end
 
   def create
-    @email = password_reset_params[:email]
-    render(:check_email)
+    @password_reset = PasswordResetForm.new(password_reset_form_params)
+
+    if @password_reset.valid?
+      user = @password_reset.user
+
+      user.generate_reset_password_token!
+
+      PasswordResetMailer.with({ email: user.email, token: user.reset_password_token }).password_reset.deliver_now
+    else
+      render(:new)
+    end
   end
 
   def edit; end
@@ -12,7 +23,7 @@ class Web::PasswordResetsController < Web::ApplicationController
 
   private
 
-  def password_reset_params
-    params.require(:password_reset).permit(:email, :password, :password_confirmation)
+  def password_reset_form_params
+    params.require(:password_reset_form).permit(:email)
   end
 end
