@@ -22,4 +22,19 @@ class Web::PasswordResetsControllerTest < ActionController::TestCase
     get :edit, params: { id: user.reset_password_token }
     assert_response :success
   end
+
+  test 'should patch update' do
+    user = create(:user)
+    user.generate_reset_password_token!
+
+    password = generate(:string)
+
+    attrs = {
+      password: password,
+      password_confirmation: password,
+    }
+
+    patch :update, params: { id: user.reset_password_token, user: attrs }
+    assert_response :redirect
+  end
 end

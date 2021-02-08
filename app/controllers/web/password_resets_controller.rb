@@ -17,13 +17,46 @@ class Web::PasswordResetsController < Web::ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @user = User.find_by(reset_password_token: params[:id])
 
-  def update; end
+    if @user.blank?
+      return render_404
+    end
+
+    if !@user.reset_password_token_actual?
+      @user.remove_reset_password_token!
+      render_404
+    end
+  end
+
+  def update
+    @user = User.find_by(reset_password_token: params[:id])
+
+    if @user.blank?
+      return render_404
+    end
+
+    if !@user.reset_password_token_actual?
+      @user.remove_reset_password_token!
+      return render_404
+    end
+
+    if @user.update(new_password_params)
+      @user.remove_reset_password_token!
+      redirect_to(:new_session)
+    else
+      render(:edit)
+    end
+  end
 
   private
 
   def password_reset_form_params
     params.require(:password_reset_form).permit(:email)
+  end
+
+  def new_password_params
+    params.require(:user).permit(:password, :password_confirmation)
   end
 end

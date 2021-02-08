@@ -1,2 +1,8 @@
-h1 Web::PasswordsResets#edit
-p Find me in app/views/web/password_resets/edit.html.slim
+h4 New password
+= simple_form_for @user, url: password_reset_path(@user.reset_password_token), as: :user do |f|
+  p
+    = f.input :password
+    = f.input :password_confirmation
+  p
+    = f.button :submit, "Confirm", class: 'mdl-button--colored'
+    
