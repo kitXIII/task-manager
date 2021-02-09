@@ -1,0 +1,8 @@
+h4 New password
+= simple_form_for @user, url: password_reset_path(@user.reset_password_token), as: :user do |f|
+  p
+    = f.input :password
+    = f.input :password_confirmation
+  p
+    = f.button :submit, "Confirm", class: 'mdl-button--colored'
+    

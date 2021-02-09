@@ -53,6 +53,8 @@ group :development do
   gem 'listen', '~> 3.2'
   gem 'foreman'
   gem 'bullet'
+  gem 'letter_opener'
+  gem 'letter_opener_web'
 end
 
 group :test do

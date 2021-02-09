@@ -13,4 +13,16 @@ class User < ApplicationRecord
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i }
+
+  def generate_reset_password_token!
+    update(reset_password_token: SecureRandom.urlsafe_base64, reset_password_token_sent_at: Time.zone.now)
+  end
+
+  def reset_password_token_actual?
+    Time.zone.now < reset_password_token_sent_at + 1.day
+  end
+
+  def remove_reset_password_token!
+    update(reset_password_token: nil, reset_password_token_sent_at: nil)
+  end
 end
