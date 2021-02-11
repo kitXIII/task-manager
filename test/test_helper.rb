@@ -3,6 +3,7 @@ require_relative '../config/environment'
 require 'rails/test_help'
 require 'simplecov'
 require 'coveralls'
+require 'sidekiq/testing'
 
 SimpleCov.start('rails') do
   if ENV['CI']
