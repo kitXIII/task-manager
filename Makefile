@@ -22,7 +22,7 @@ compose-test:
 	docker-compose run --rm -u 1000:1000 web make test
 
 compose-shell:
-	docker-compose run --service-ports --rm -u 1000:1000 web /bin/bash
+	docker-compose run --rm -u 1000:1000 web /bin/bash
 
 compose-run:
 	docker-compose run --service-ports --rm -u 1000:1000 web
