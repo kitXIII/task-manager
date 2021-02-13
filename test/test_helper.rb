@@ -12,6 +12,7 @@ SimpleCov.start('rails') do
 end
 
 Rails.application.eager_load!
+Sidekiq::Testing.inline!
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
