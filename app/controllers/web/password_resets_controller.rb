@@ -11,7 +11,7 @@ class Web::PasswordResetsController < Web::ApplicationController
 
       user.generate_reset_password_token!
 
-      PasswordResetMailer.with({ email: user.email, token: user.reset_password_token }).password_reset.deliver_now
+      PasswordResetMailer.with({ email: user.email, token: user.reset_password_token }).password_reset.deliver_later
     else
       render(:new)
     end
