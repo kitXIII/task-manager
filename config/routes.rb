@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => "web/boards#show"
+  root :to => 'web/boards#show'
 
   scope module: :web do
     resource :board, only: :show
@@ -19,6 +19,6 @@ Rails.application.routes.draw do
     end
   end
 
-  mount Sidekiq::Web => '/admin/sidekiq'
-  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+  mount Sidekiq::Web, at: '/admin/sidekiq'
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
