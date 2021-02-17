@@ -15,10 +15,13 @@ services:
       - 3035:3035
     depends_on:
       - db
+      - redis
+      - sidekiq
     environment: &web-environment
       DATABASE_HOST: db
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
+      REDIS_URL: redis://redis
       BUNDLE_PATH: /bundle_cache
       GEM_HOME: /bundle_cache
       GEM_PATH: /bundle_cache
@@ -28,6 +31,14 @@ services:
       NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
     command: bundle exec foreman start -f Procfile.dev
 
+  sidekiq:
+    build: .
+    volumes: *web-volumes
+    depends_on:
+      - redis
+    environment: *web-environment
+    command: bundle exec sidekiq -C /app/config/sidekiq.yml
+
   db:
     image: postgres:11.4
     ports:
@@ -35,6 +46,9 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  redis:
+    image: redis:5.0.9-alpine
 
 volumes:
   bundle_cache:

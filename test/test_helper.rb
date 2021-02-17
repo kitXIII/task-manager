@@ -3,6 +3,7 @@ require_relative '../config/environment'
 require 'rails/test_help'
 require 'simplecov'
 require 'coveralls'
+require 'sidekiq/testing'
 
 SimpleCov.start('rails') do
   if ENV['CI']
@@ -11,6 +12,7 @@ SimpleCov.start('rails') do
 end
 
 Rails.application.eager_load!
+Sidekiq::Testing.inline!
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
