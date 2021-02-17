@@ -2,6 +2,9 @@ install:
 	bundle install
 
 lint:
+	bundle exec rubocop
+
+lint-fix:
 	bundle exec rubocop -a
 
 test:
@@ -17,6 +20,9 @@ compose-install:
 
 compose-lint:
 	docker-compose run --rm -u 1000:1000 web make lint
+
+compose-lint-fix:
+	docker-compose run --rm -u 1000:1000 web make lint-fix
 
 compose-test:
 	docker-compose run --rm -u 1000:1000 web make test
