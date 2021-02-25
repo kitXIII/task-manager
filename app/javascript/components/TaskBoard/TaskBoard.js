@@ -18,15 +18,14 @@ const MODES = {
   NONE: 'none'
 };
 
-const TaskBoard = ({ board, loadBoard }) => {
+const TaskBoard = ({ board, loadBoard, loadColumnMore }) => {
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const styles = useStyles();
 
-  useEffect(() => loadBoard(), [loadBoard]);
+  useEffect(() => loadBoard(), []);
 
-  const loadColumnMore = () => {};
   const handleCardDragEnd = () => {};
   const handleTaskCreate = () => {};
   const handleTaskLoad = () => {};
@@ -75,6 +74,7 @@ const TaskBoard = ({ board, loadBoard }) => {
 
 TaskBoard.propTypes = {
   loadBoard: PropTypes.func.isRequired,
+  loadColumnMore: PropTypes.func.isRequired,
   board: PropTypes.shape({
     columns: PropTypes.arrayOf(
       PropTypes.shape({
