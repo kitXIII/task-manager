@@ -9,8 +9,13 @@ import TaskBoard from 'components/TaskBoard';
 const App = () => (
   <Provider store={store}>
     <TaskBoardContainer>
-      {({ board, loadBoard, loadColumnMore }) => (
-        <TaskBoard loadBoard={loadBoard} board={board} loadColumnMore={loadColumnMore} />
+      {({ board, loadBoard, loadColumnMore, handleCardChangeState }) => (
+        <TaskBoard
+          loadBoard={loadBoard}
+          board={board}
+          loadColumnMore={loadColumnMore}
+          handleCardChangeState={handleCardChangeState}
+        />
       )}
     </TaskBoardContainer>
   </Provider>
