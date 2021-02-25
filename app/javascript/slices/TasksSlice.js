@@ -1,9 +1,9 @@
 import { propEq } from 'ramda';
 import { createSlice } from '@reduxjs/toolkit';
-import TasksRepository from 'repositories/TasksRepository';
-import { STATES } from 'presenters/TaskPresenter';
-import { useDispatch } from 'react-redux';
 import { changeColumn } from '@lourenci/react-kanban';
+import TasksRepository from 'repositories/TasksRepository';
+import TaskPresenter, { STATES } from 'presenters/TaskPresenter';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   board: {
@@ -74,8 +74,23 @@ export const useTasksActions = () => {
     });
   };
 
+  const handleCardChangeState = (task, source, destination) => {
+    const transition = TaskPresenter.transitions(task).find(({ to }) => destination.toColumnId === to);
+
+    if (!transition) {
+      return null;
+    }
+
+    return TasksRepository.update(task.id, { stateEvent: transition.event })
+      .then(() => Promise.all([loadColumn(destination.toColumnId), loadColumn(source.fromColumnId)]))
+      .catch((error) => {
+        alert(`Move failed! ${error.message}`);
+      });
+  };
+
   return {
     loadBoard,
-    loadColumnMore
+    loadColumnMore,
+    handleCardChangeState
   };
 };

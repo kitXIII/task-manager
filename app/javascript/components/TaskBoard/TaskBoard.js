@@ -18,15 +18,15 @@ const MODES = {
   NONE: 'none'
 };
 
-const TaskBoard = ({ board, loadBoard, loadColumnMore }) => {
+const TaskBoard = ({ board, loadBoard, loadColumnMore, handleCardChangeState }) => {
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const styles = useStyles();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadBoard(), []);
 
-  const handleCardDragEnd = () => {};
   const handleTaskCreate = () => {};
   const handleTaskLoad = () => {};
   const handleTaskUpdate = () => {};
@@ -50,7 +50,7 @@ const TaskBoard = ({ board, loadBoard, loadColumnMore }) => {
       <KanbanBoard
         renderCard={(card) => <Task onClick={handleOpenEditPopup} task={card} />}
         renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
-        onCardDragEnd={handleCardDragEnd}
+        onCardDragEnd={handleCardChangeState}
         disableColumnDrag
       >
         {board}
@@ -75,6 +75,7 @@ const TaskBoard = ({ board, loadBoard, loadColumnMore }) => {
 TaskBoard.propTypes = {
   loadBoard: PropTypes.func.isRequired,
   loadColumnMore: PropTypes.func.isRequired,
+  handleCardChangeState: PropTypes.func.isRequired,
   board: PropTypes.shape({
     columns: PropTypes.arrayOf(
       PropTypes.shape({
