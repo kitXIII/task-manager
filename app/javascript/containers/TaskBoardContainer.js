@@ -6,13 +6,13 @@ const TaskBoardContainer = (props) => {
   const { children } = props;
   const board = useSelector((state) => state.TasksSlice.board);
 
-  const { loadBoard, loadColumnMore, handleCardChangeState } = useTasksActions();
+  const { loadBoard, loadColumnMore, loadColumn } = useTasksActions();
 
   return children({
     board,
     loadBoard,
-    loadColumnMore,
-    handleCardChangeState
+    loadColumn,
+    loadColumnMore
   });
 };
 

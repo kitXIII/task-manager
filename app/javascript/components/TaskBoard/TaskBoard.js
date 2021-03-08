@@ -10,6 +10,10 @@ import ColumnHeader from 'components/ColumnHeader';
 import EditPopup from 'components/EditPopup';
 import Task from 'components/Task';
 
+import TaskPresenter from 'presenters/TaskPresenter';
+
+import TasksRepository from 'repositories/TasksRepository';
+
 import useStyles from './useStyles';
 
 const MODES = {
@@ -18,7 +22,7 @@ const MODES = {
   NONE: 'none'
 };
 
-const TaskBoard = ({ board, loadBoard, loadColumnMore, handleCardChangeState }) => {
+const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
@@ -26,6 +30,20 @@ const TaskBoard = ({ board, loadBoard, loadColumnMore, handleCardChangeState }) 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadBoard(), []);
+
+  const handleCardChangeState = (task, source, destination) => {
+    const transition = TaskPresenter.transitions(task).find(({ to }) => destination.toColumnId === to);
+
+    if (!transition) {
+      return null;
+    }
+
+    return TasksRepository.update(task.id, { stateEvent: transition.event })
+      .then(() => Promise.all([loadColumn(destination.toColumnId), loadColumn(source.fromColumnId)]))
+      .catch((error) => {
+        alert(`Move failed! ${error.message}`);
+      });
+  };
 
   const handleTaskCreate = () => {};
   const handleTaskLoad = () => {};
@@ -74,8 +92,8 @@ const TaskBoard = ({ board, loadBoard, loadColumnMore, handleCardChangeState }) 
 
 TaskBoard.propTypes = {
   loadBoard: PropTypes.func.isRequired,
+  loadColumn: PropTypes.func.isRequired,
   loadColumnMore: PropTypes.func.isRequired,
-  handleCardChangeState: PropTypes.func.isRequired,
   board: PropTypes.shape({
     columns: PropTypes.arrayOf(
       PropTypes.shape({
