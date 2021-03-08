@@ -14,6 +14,8 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import TasksRepository from 'repositories/TasksRepository';
 
+import TaskForm from 'forms/TaskForm';
+
 import useStyles from './useStyles';
 
 const MODES = {
@@ -31,6 +33,19 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadBoard(), []);
 
+  const handleOpenAddPopup = () => {
+    setMode(MODES.ADD);
+  };
+
+  const handleOpenEditPopup = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODES.EDIT);
+  };
+
+  const handleClose = () => {
+    setMode(MODES.NONE);
+  };
+
   const handleCardChangeState = (task, source, destination) => {
     const transition = TaskPresenter.transitions(task).find(({ to }) => destination.toColumnId === to);
 
@@ -45,23 +60,30 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
       });
   };
 
-  const handleTaskCreate = () => {};
-  const handleTaskLoad = () => {};
-  const handleTaskUpdate = () => {};
-  const handleTaskDestroy = () => {};
-
-  const handleOpenAddPopup = () => {
-    setMode(MODES.ADD);
+  const handleTaskCreate = (params) => {
+    const attributes = TaskForm.attributesToSubmit(params);
+    return TasksRepository.create(attributes).then(({ data: { task } }) => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
   };
 
-  const handleOpenEditPopup = (task) => {
-    setOpenedTaskId(task.id);
-    setMode(MODES.EDIT);
+  const handleTaskLoad = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
   };
 
-  const handleClose = () => {
-    setMode(MODES.NONE);
-  };
+  const handleTaskDestroy = (task) =>
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
 
   return (
     <>
