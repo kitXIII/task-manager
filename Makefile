@@ -1,11 +1,21 @@
 install:
 	bundle install
 
-lint:
+lint-ruby:
 	bundle exec rubocop
 
-lint-fix:
+lint-ruby-fix:
 	bundle exec rubocop -a
+
+lint-js:
+	yarn lint
+
+lint-js-fix:
+	yarn lint --fix
+
+lint:	lint-ruby lint-js
+
+lint-fix: lint-ruby-fix lint-js-fix
 
 test:
 	rails test
