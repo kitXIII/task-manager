@@ -6,7 +6,8 @@ class Api::V1::TasksController < Api::V1::ApplicationController
       ransack(ransack_params).
       result.
       page(page).
-      per(per_page)
+      per(per_page).
+      with_attached_image
 
     respond_with(tasks, each_serializer: TaskSerializer, root: 'items', meta: build_meta(tasks))
   end
