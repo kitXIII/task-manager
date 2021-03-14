@@ -507,6 +507,9 @@ Based on Rails 6.0.3.4 routes of App::Application
 // api_v1_users => /api/v1/users(.:format)
   // function(options)
   apiV1UsersPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"v1",false],[2,[7,"/",false],[2,[6,"users",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
+// attach_image_api_v1_task => /api/v1/tasks/:id/attach_image(.:format)
+  // function(id, options)
+  attachImageApiV1TaskPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"v1",false],[2,[7,"/",false],[2,[6,"tasks",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"attach_image",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
 // board => /board(.:format)
   // function(options)
   boardPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"board",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
@@ -516,21 +519,48 @@ Based on Rails 6.0.3.4 routes of App::Application
 // edit_admin_user => /admin/users/:id/edit(.:format)
   // function(id, options)
   editAdminUserPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]),
+// edit_password_reset => /password_resets/:id/edit(.:format)
+  // function(id, options)
+  editPasswordResetPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"password_resets",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // edit_rails_conductor_inbound_email => /rails/conductor/action_mailbox/inbound_emails/:id/edit(.:format)
   // function(id, options)
   editRailsConductorInboundEmailPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"conductor",false],[2,[7,"/",false],[2,[6,"action_mailbox",false],[2,[7,"/",false],[2,[6,"inbound_emails",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"edit",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
+// letter_opener_web => /letter_opener
+  // function(options)
+  letterOpenerWebPath: Utils.route([], {}, [2,[7,"/",false],[6,"letter_opener",false]]),
+// letter_opener_web.clear_letters => /letter_opener/clear(.:format)
+  // function(options)
+  letterOpenerWebClearLettersPath: Utils.route([["format",false]], {}, [2,[2,[2,[7,"/",false],[6,"letter_opener",false]],[7,"/",false]],[2,[6,"clear",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// letter_opener_web.delete_letter => /letter_opener/:id(.:format)
+  // function(id, options)
+  letterOpenerWebDeleteLetterPath: Utils.route([["id",true],["format",false]], {}, [2,[2,[2,[7,"/",false],[6,"letter_opener",false]],[7,"/",false]],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// letter_opener_web.letters => /letter_opener/
+  // function(options)
+  letterOpenerWebLettersPath: Utils.route([], {}, [2,[2,[7,"/",false],[6,"letter_opener",false]],[7,"/",false]]),
+// letter_opener_web.letter => /letter_opener/:id(/:style)(.:format)
+  // function(id, options)
+  letterOpenerWebLetterPath: Utils.route([["id",true],["style",false],["format",false]], {}, [2,[2,[2,[7,"/",false],[6,"letter_opener",false]],[7,"/",false]],[2,[3,"id",false],[2,[1,[2,[7,"/",false],[3,"style",false]],false],[1,[2,[8,".",false],[3,"format",false]],false]]]]),
 // new_admin_user => /admin/users/new(.:format)
   // function(options)
   newAdminUserPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[2,[6,"users",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]),
 // new_developer => /developers/new(.:format)
   // function(options)
   newDeveloperPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"developers",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// new_password_reset => /password_resets/new(.:format)
+  // function(options)
+  newPasswordResetPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"password_resets",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
 // new_rails_conductor_inbound_email => /rails/conductor/action_mailbox/inbound_emails/new(.:format)
   // function(options)
   newRailsConductorInboundEmailPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"conductor",false],[2,[7,"/",false],[2,[6,"action_mailbox",false],[2,[7,"/",false],[2,[6,"inbound_emails",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
 // new_session => /session/new(.:format)
   // function(options)
   newSessionPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"session",false],[2,[7,"/",false],[2,[6,"new",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// password_reset => /password_resets/:id(.:format)
+  // function(id, options)
+  passwordResetPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"password_resets",false],[2,[7,"/",false],[2,[3,"id",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]),
+// password_resets => /password_resets(.:format)
+  // function(options)
+  passwordResetsPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"password_resets",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
 // rails_blob_representation => /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format)
   // function(signed_blob_id, variation_key, filename, options)
   railsBlobRepresentationPath: Utils.route([["signed_blob_id",true],["variation_key",true],["filename",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"active_storage",false],[2,[7,"/",false],[2,[6,"representations",false],[2,[7,"/",false],[2,[3,"signed_blob_id",false],[2,[7,"/",false],[2,[3,"variation_key",false],[2,[7,"/",false],[2,[5,[3,"filename",false],false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]]]),
@@ -582,12 +612,18 @@ Based on Rails 6.0.3.4 routes of App::Application
 // rails_service_blob => /rails/active_storage/blobs/:signed_id/*filename(.:format)
   // function(signed_id, filename, options)
   railsServiceBlobPath: Utils.route([["signed_id",true],["filename",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"active_storage",false],[2,[7,"/",false],[2,[6,"blobs",false],[2,[7,"/",false],[2,[3,"signed_id",false],[2,[7,"/",false],[2,[5,[3,"filename",false],false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
+// remove_image_api_v1_task => /api/v1/tasks/:id/remove_image(.:format)
+  // function(id, options)
+  removeImageApiV1TaskPath: Utils.route([["id",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"api",false],[2,[7,"/",false],[2,[6,"v1",false],[2,[7,"/",false],[2,[6,"tasks",false],[2,[7,"/",false],[2,[3,"id",false],[2,[7,"/",false],[2,[6,"remove_image",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]]]]),
 // root => /
   // function(options)
   rootPath: Utils.route([], {}, [7,"/",false]),
 // session => /session(.:format)
   // function(options)
   sessionPath: Utils.route([["format",false]], {}, [2,[7,"/",false],[2,[6,"session",false],[1,[2,[8,".",false],[3,"format",false]],false]]]),
+// sidekiq_web => /admin/sidekiq
+  // function(options)
+  sidekiqWebPath: Utils.route([], {}, [2,[7,"/",false],[2,[6,"admin",false],[2,[7,"/",false],[6,"sidekiq",false]]]]),
 // update_rails_disk_service => /rails/active_storage/disk/:encoded_token(.:format)
   // function(encoded_token, options)
   updateRailsDiskServicePath: Utils.route([["encoded_token",true],["format",false]], {}, [2,[7,"/",false],[2,[6,"rails",false],[2,[7,"/",false],[2,[6,"active_storage",false],[2,[7,"/",false],[2,[6,"disk",false],[2,[7,"/",false],[2,[3,"encoded_token",false],[1,[2,[8,".",false],[3,"format",false]],false]]]]]]]]])}

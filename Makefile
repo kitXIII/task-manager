@@ -20,6 +20,9 @@ lint-fix: lint-ruby-fix lint-js-fix
 test:
 	rails test
 
+generate-front-routes:
+  rails js_routes:generate
+
 compose-setup: compose-build compose-install
 
 compose-build:

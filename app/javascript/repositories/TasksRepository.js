@@ -1,5 +1,6 @@
 import routes from 'routes';
 import FetchHelper from 'utils/fetchHelper';
+import fetchHelper from "../utils/fetchHelper";
 
 export default {
   index(params) {
@@ -25,5 +26,15 @@ export default {
   destroy(id) {
     const path = routes.apiV1TaskPath(id);
     return FetchHelper.delete(path);
+  },
+
+  attachImage(id, { attachment }) {
+    const path = routes.attachImageApiV1TaskPath(id);
+    return fetchHelper.putFormData(path, { attachment });
+  },
+
+  deleteImage(id) {
+    const path = routes.removeImageApiV1TaskPath(id);
+    return FetchHelper.put(path, {});
   }
 };
