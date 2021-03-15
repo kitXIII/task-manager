@@ -1,6 +1,6 @@
 import routes from 'routes';
 import FetchHelper from 'utils/fetchHelper';
-import fetchHelper from "../utils/fetchHelper";
+import fetchHelper from '../utils/fetchHelper';
 
 export default {
   index(params) {

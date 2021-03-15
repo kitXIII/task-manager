@@ -74,8 +74,8 @@ export default {
     return axios
       .put(url, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(camelize);
   }
