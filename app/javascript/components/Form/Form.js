@@ -68,26 +68,27 @@ const Form = ({ errors, onChange, onAttachImage, onRemoveImage, task, type }) =>
         error={has('assignee', errors)}
         helperText={errors.author}
       />
-      {isNil(TaskPresenter.imageUrl(task)) ? (
-        <div className={styles.imageUploadContainer}>
-          <ImageUpload onUpload={onAttachImage} />
-        </div>
-      ) : (
-        <div className={styles.previewContainer}>
-          <img className={styles.preview} src={TaskPresenter.imageUrl(task)} alt='Attachment' />
-          <Button variant='contained' size='small' color='primary' onClick={onRemoveImage}>
-            Remove image
-          </Button>
-        </div>
-      )}
+      {isEditFormType &&
+        (isNil(TaskPresenter.imageUrl(task)) ? (
+          <div className={styles.imageUploadContainer}>
+            <ImageUpload onUpload={onAttachImage} />
+          </div>
+        ) : (
+          <div className={styles.previewContainer}>
+            <img className={styles.preview} src={TaskPresenter.imageUrl(task)} alt='Attachment' />
+            <Button variant='contained' size='small' color='primary' onClick={onRemoveImage}>
+              Remove image
+            </Button>
+          </div>
+        ))}
     </form>
   );
 };
 
 Form.propTypes = {
   onChange: PropTypes.func.isRequired,
-  onAttachImage: PropTypes.func.isRequired,
-  onRemoveImage: PropTypes.func.isRequired,
+  onAttachImage: PropTypes.func,
+  onRemoveImage: PropTypes.func,
   task: TaskPresenter.shape().isRequired,
   type: PropTypes.string,
   errors: PropTypes.shape({
@@ -100,7 +101,9 @@ Form.propTypes = {
 
 Form.defaultProps = {
   errors: {},
-  type: FORM_TYPES.NEW
+  type: FORM_TYPES.NEW,
+  onAttachImage: () => {},
+  onRemoveImage: () => {}
 };
 
 export default Form;
