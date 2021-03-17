@@ -41,11 +41,30 @@ const tasksSlice = createSlice({
       });
 
       return state;
+    },
+    changeCard(state, { payload }) {
+      const { card } = payload;
+      const column = state.board.columns.find(propEq('id', card.state));
+
+      const { cards } = column;
+      const cardIndex = cards.findIndex((c) => c.id === card.id);
+
+      if (cardIndex === -1) {
+        return state;
+      }
+
+      const items = [...cards.slice(0, cardIndex), card, ...cards.slice(cardIndex + 1)];
+
+      state.board = changeColumn(state.board, column, {
+        cards: items
+      });
+
+      return state;
     }
   }
 });
 
-const { loadColumnSuccess, loadColumnMoreSuccess } = tasksSlice.actions;
+const { loadColumnSuccess, loadColumnMoreSuccess, changeCard } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 
@@ -74,9 +93,12 @@ export const useTasksActions = () => {
     });
   };
 
+  const changeTask = (card) => dispatch(changeCard({ card }));
+
   return {
     loadBoard,
     loadColumn,
-    loadColumnMore
+    loadColumnMore,
+    changeTask
   };
 };

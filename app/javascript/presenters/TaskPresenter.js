@@ -13,7 +13,8 @@ export default new PropTypesPresenter(
       PropTypes.shape({ event: PropTypes.string, from: PropTypes.string, to: PropTypes.string })
     ),
     author: UserPresenter.shape(),
-    assignee: UserPresenter.shape()
+    assignee: UserPresenter.shape(),
+    imageUrl: PropTypes.string
   },
   {
     title(task) {

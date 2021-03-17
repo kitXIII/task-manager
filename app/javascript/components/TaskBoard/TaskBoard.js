@@ -24,7 +24,7 @@ const MODES = {
   NONE: 'none'
 };
 
-const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
+const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore, changeTask }) => {
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
@@ -85,6 +85,20 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
       handleClose();
     });
 
+  const handleTaskAttachImage = (task, attachment) =>
+    TasksRepository.attachImage(task.id, attachment).then((res) => {
+      if (res?.data?.task) {
+        changeTask(res?.data?.task);
+      }
+    });
+
+  const handleTaskDeleteImage = (task) =>
+    TasksRepository.deleteImage(task.id).then((res) => {
+      if (res?.data?.task) {
+        changeTask(res?.data?.task);
+      }
+    });
+
   return (
     <>
       <KanbanBoard
@@ -104,6 +118,8 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
           onLoadCard={handleTaskLoad}
           onCardDestroy={handleTaskDestroy}
           onCardUpdate={handleTaskUpdate}
+          onCardAttachImage={handleTaskAttachImage}
+          onCardDeleteImage={handleTaskDeleteImage}
           onClose={handleClose}
           cardId={openedTaskId}
         />
@@ -116,6 +132,7 @@ TaskBoard.propTypes = {
   loadBoard: PropTypes.func.isRequired,
   loadColumn: PropTypes.func.isRequired,
   loadColumnMore: PropTypes.func.isRequired,
+  changeTask: PropTypes.func.isRequired,
   board: PropTypes.shape({
     columns: PropTypes.arrayOf(
       PropTypes.shape({
