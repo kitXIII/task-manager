@@ -85,6 +85,18 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
       handleClose();
     });
 
+  const handleTaskAttachImage = (task, attachment) =>
+    TasksRepository.attachImage(task.id, attachment).then(() => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
+
+  const handleTaskDeleteImage = (task) =>
+    TasksRepository.deleteImage(task.id).then(() => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
+
   return (
     <>
       <KanbanBoard
@@ -104,6 +116,8 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
           onLoadCard={handleTaskLoad}
           onCardDestroy={handleTaskDestroy}
           onCardUpdate={handleTaskUpdate}
+          onCardAttachImage={handleTaskAttachImage}
+          onCardDeleteImage={handleTaskDeleteImage}
           onClose={handleClose}
           cardId={openedTaskId}
         />

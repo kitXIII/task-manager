@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import { serialize as objectToFormData } from 'object-to-formdata';
+import { assocPath, path, isEmpty } from 'ramda';
 
 import { camelize, decamelize } from './keysConverter';
 
@@ -69,7 +70,13 @@ export default {
 
   putFormData(url, json) {
     const body = decamelize(json);
-    const formData = objectToFormData(body);
+
+    // humps.decamelizeKeys brakes blob file
+    const fixedBody = isEmpty(path(['attachment', 'image'], body))
+      ? assocPath(['attachment', 'image'], path(['attachment', 'image'], json), body)
+      : body;
+
+    const formData = objectToFormData(fixedBody);
 
     return axios
       .put(url, formData, {

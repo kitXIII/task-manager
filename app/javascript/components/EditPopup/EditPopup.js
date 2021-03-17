@@ -18,7 +18,15 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate }) => {
+const EditPopup = ({
+  cardId,
+  onClose,
+  onCardDestroy,
+  onLoadCard,
+  onCardUpdate,
+  onCardAttachImage,
+  onCardDeleteImage
+}) => {
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
@@ -51,6 +59,26 @@ const EditPopup = ({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
     });
   };
 
+  const onAttachImage = ({ attachment }) => {
+    setSaving(true);
+
+    onCardAttachImage(task, attachment).catch((error) => {
+      setSaving(false);
+
+      alert(`Attach image Failed! Error: ${error.message}`);
+    });
+  };
+
+  const onRemoveImage = () => {
+    setSaving(true);
+
+    onCardDeleteImage(task).catch((error) => {
+      setSaving(false);
+
+      alert(`Remove image Failed! Error: ${error.message}`);
+    });
+  };
+
   const isLoading = isNil(task);
 
   return (
@@ -70,7 +98,14 @@ const EditPopup = ({ cardId, onClose, onCardDestroy, onLoadCard, onCardUpdate })
               <CircularProgress />
             </div>
           ) : (
-            <Form errors={errors} onChange={setTask} task={task} type={FORM_TYPES.EDIT} />
+            <Form
+              errors={errors}
+              onChange={setTask}
+              task={task}
+              type={FORM_TYPES.EDIT}
+              onAttachImage={onAttachImage}
+              onRemoveImage={onRemoveImage}
+            />
           )}
         </CardContent>
         <CardActions className={styles.actions}>
@@ -103,7 +138,9 @@ EditPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
   onCardDestroy: PropTypes.func.isRequired,
   onLoadCard: PropTypes.func.isRequired,
-  onCardUpdate: PropTypes.func.isRequired
+  onCardUpdate: PropTypes.func.isRequired,
+  onCardAttachImage: PropTypes.func.isRequired,
+  onCardDeleteImage: PropTypes.func.isRequired
 };
 
 export default EditPopup;
