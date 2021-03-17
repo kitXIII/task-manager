@@ -76,6 +76,6 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   end
 
   def attachment_params
-    params.require(:attachment).permit(:image, :crop_x, :crop_y, :crop_width, :crop_height)
+    params.require(:attachment).permit(:id, :image, :crop_x, :crop_y, :crop_width, :crop_height)
   end
 end
