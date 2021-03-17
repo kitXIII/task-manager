@@ -18,6 +18,26 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
+const getAttachImageErrorMessage = (error) => {
+  if (error?.message) {
+    return `Attach image Failed! Error: ${error.message}`;
+  }
+
+  if (error?.image && Array.isArray(error.image)) {
+    return `Attach image Failed! Error: ${error.image[0]}`;
+  }
+
+  return 'Attach image Failed!';
+};
+
+const getRemoveImageErrorMessage = (error) => {
+  if (error?.message) {
+    return `Remove image Failed! Error: ${error.message}`;
+  }
+
+  return 'Remove image Failed!';
+};
+
 const EditPopup = ({
   cardId,
   onClose,
@@ -39,44 +59,53 @@ const EditPopup = ({
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onCardUpdate(task).catch((error) => {
-      setSaving(false);
-      setErrors(error || {});
+    onCardUpdate(task)
+      .catch((error) => {
+        setErrors(error || {});
 
-      if (error instanceof Error) {
-        alert(`Update Failed! Error: ${error.message}`);
-      }
-    });
+        if (error instanceof Error) {
+          alert(`Update Failed! Error: ${error.message}`);
+        }
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onCardDestroy(task).catch((error) => {
-      setSaving(false);
-
-      alert(`Destruction Failed! Error: ${error.message}`);
-    });
+    onCardDestroy(task)
+      .catch((error) => {
+        alert(`Destruction Failed! Error: ${error.message}`);
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   const onAttachImage = ({ attachment }) => {
     setSaving(true);
 
-    onCardAttachImage(task, attachment).catch((error) => {
-      setSaving(false);
-
-      alert(`Attach image Failed! Error: ${error.message}`);
-    });
+    onCardAttachImage(task, attachment)
+      .catch((error) => {
+        alert(getAttachImageErrorMessage(error));
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   const onRemoveImage = () => {
     setSaving(true);
 
-    onCardDeleteImage(task).catch((error) => {
-      setSaving(false);
-
-      alert(`Remove image Failed! Error: ${error.message}`);
-    });
+    onCardDeleteImage(task)
+      .catch((error) => {
+        alert(getRemoveImageErrorMessage(error));
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   const isLoading = isNil(task);

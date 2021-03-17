@@ -10,8 +10,14 @@ import 'react-image-crop/dist/ReactCrop.css';
 const App = () => (
   <Provider store={store}>
     <TaskBoardContainer>
-      {({ board, loadBoard, loadColumn, loadColumnMore }) => (
-        <TaskBoard loadBoard={loadBoard} board={board} loadColumn={loadColumn} loadColumnMore={loadColumnMore} />
+      {({ board, loadBoard, loadColumn, loadColumnMore, changeTask }) => (
+        <TaskBoard
+          loadBoard={loadBoard}
+          board={board}
+          loadColumn={loadColumn}
+          loadColumnMore={loadColumnMore}
+          changeTask={changeTask}
+        />
       )}
     </TaskBoardContainer>
   </Provider>

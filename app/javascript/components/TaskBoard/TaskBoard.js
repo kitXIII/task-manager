@@ -24,7 +24,7 @@ const MODES = {
   NONE: 'none'
 };
 
-const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
+const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore, changeTask }) => {
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
 
@@ -86,15 +86,17 @@ const TaskBoard = ({ board, loadBoard, loadColumn, loadColumnMore }) => {
     });
 
   const handleTaskAttachImage = (task, attachment) =>
-    TasksRepository.attachImage(task.id, attachment).then(() => {
-      loadColumn(TaskPresenter.state(task));
-      handleClose();
+    TasksRepository.attachImage(task.id, attachment).then((res) => {
+      if (res?.data?.task) {
+        changeTask(res?.data?.task);
+      }
     });
 
   const handleTaskDeleteImage = (task) =>
-    TasksRepository.deleteImage(task.id).then(() => {
-      loadColumn(TaskPresenter.state(task));
-      handleClose();
+    TasksRepository.deleteImage(task.id).then((res) => {
+      if (res?.data?.task) {
+        changeTask(res?.data?.task);
+      }
     });
 
   return (
@@ -130,6 +132,7 @@ TaskBoard.propTypes = {
   loadBoard: PropTypes.func.isRequired,
   loadColumn: PropTypes.func.isRequired,
   loadColumnMore: PropTypes.func.isRequired,
+  changeTask: PropTypes.func.isRequired,
   board: PropTypes.shape({
     columns: PropTypes.arrayOf(
       PropTypes.shape({
